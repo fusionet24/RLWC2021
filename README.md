@@ -10,7 +10,10 @@ This repository will consist of the following compontents each within their own 
 ## Data Folder Structure 
 
 The data in the data folders are structured as so. This is to enable simpified partition management. Our Partitions are rounds as they should never need to be updated once captured here.
-![image](https://user-images.githubusercontent.com/315909/201450425-fd49b07e-b210-4d58-bc95-81e1bcec4294.png)
+
+![image](https://user-images.githubusercontent.com/315909/201450819-b5c8abb0-d6b3-4152-8ecf-a5d82fdf8a0c.png)
+
+An example of this would be DATA/Rugby League World Cup  Round 1/England-Samoa.csv"
 
 The data has been seperated into these files
 - Player Stats
