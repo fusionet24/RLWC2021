@@ -11,7 +11,7 @@ This repository will consist of the following compontents each within their own 
 
 The data in the data folders are structured as so. This is to enable simpified partition management. Our Partitions are rounds as they should never need to be updated once captured here.
 
-![image](https://user-images.githubusercontent.com/315909/201450819-b5c8abb0-d6b3-4152-8ecf-a5d82fdf8a0c.png)
+![image](https://user-images.githubusercontent.com/315909/202063012-38373e3f-3632-4cb8-a3bb-022b661b06b5.png)
 
 An example of this would be DATA/Rugby League World Cup  Round 1/England-Samoa.csv"
 
