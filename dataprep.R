@@ -49,7 +49,39 @@ download_image_team <- function (image_url, folder = "C:\\WIP\\Personal\\web2\\M
 }
 
 
-  map(exec, pages,
-      list(html_node('.home-team') %>% html_attr("data-src"),html_node('.away-team') %>% html_attr("data-src"))
-      )
-
+pages %>% 
+  map(function (p) 
+    union(
+        p %>% 
+        html_node('.player-stats') %>% 
+        html_node(xpath = '//*[@id="home"]/div/table') %>%
+        html_table() %>%
+        add_column(
+          player_img = p %>% html_node('.player-stats') %>%  html_node(xpath = '//*[@id="home"]/div/table') %>% html_elements("img") %>% html_attr('data-src'),
+          game = p %>% rvest::html_nodes('.design-2') %>% html_node('.mb-2') %>%   html_text() %>% str_replace_all( "[[:punct:]]", ""), 
+        #  referee = official,
+          date = p %>% html_node('.mb-2+ .d-block') %>% html_text2(),
+          team = p %>% html_node('.home') %>% html_text() %>% str_trim()
+        ),
+        p %>% 
+          html_node('.player-stats') %>% 
+          html_node(xpath = '//*[@id="away"]/div/table') %>%
+          html_table() %>%
+          add_column(
+            player_img = p %>% html_node('.player-stats') %>%  html_node(xpath = '//*[@id="away"]/div/table') %>% html_elements("img") %>% html_attr('data-src'),
+            game = p %>% rvest::html_nodes('.design-2') %>% html_node('.mb-2') %>%   html_text() %>% str_replace_all( "[[:punct:]]", ""), 
+            #  referee = official,
+            date = p %>% html_node('.mb-2+ .d-block') %>% html_text2(),
+            team = p %>% html_node('.away') %>% html_text() %>% str_trim()
+          ) 
+    
+      ) %>%
+      select(!"Player...1") %>% 
+      rename("Player" = "Player...2" )
+  ) %>%
+  map(function(csv) 
+    
+    write_csv(csv, file = paste0("C:\\WIP\\Personal\\web2\\MyYearInData\\", str_trim(unique(csv$game)),str_trim(unique(csv$team)[1]),'-',str_trim(unique(csv$team)[2]),'.csv') ) 
+    
+    )
+  
