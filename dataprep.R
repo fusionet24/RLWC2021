@@ -26,8 +26,8 @@ download_image_players <- function (image_url, folder = "C:\\WIP\\Personal\\web2
   small_image_url <- image_url
   large_image_url <- str_replace(image_url,"150px","500px")
   large_image_url
-  download.file(image_url,paste0(folder,str_replace(str_split_fixed(image_url,"/",6)[6],'/','-')),mode = "wb")
-  download.file(large_image_url,paste0(folder,str_replace(str_split_fixed(large_image_url,"/",6)[6],'/','-')),mode = "wb")
+  tryCatch(download.file(image_url,paste0(folder,str_replace(str_split_fixed(image_url,"/",6)[6],'/','-')),mode = "wb"),error = function(e) {})
+  tryCatch(download.file(large_image_url,paste0(folder,str_replace(str_split_fixed(large_image_url,"/",6)[6],'/','-')),mode = "wb"),error = function(e) {})
 }
 #get player images
 pages %>% 
@@ -40,3 +40,16 @@ pages %>%
   unique() %>% 
   map(download_image_players)
      
+
+# Download Team Image
+
+download_image_team <- function (image_url, folder = "C:\\WIP\\Personal\\web2\\MyYearInData\\images\\teams\\")
+{
+  download.file(paste0("https://www.rlwc2021.com/",image_url),paste0(folder,str_split_fixed(image_url,"/",6)[6],'/'),mode = "wb")
+}
+
+
+  map(exec, pages,
+      list(html_node('.home-team') %>% html_attr("data-src"),html_node('.away-team') %>% html_attr("data-src"))
+      )
+
