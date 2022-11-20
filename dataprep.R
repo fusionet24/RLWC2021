@@ -95,6 +95,7 @@ pages %>%
   map(function(page)
   union(
   tibble_row(
+    game = page %>% rvest::html_nodes('.design-2') %>% html_node('.mb-2') %>%   html_text() %>% str_replace_all( "[[:punct:]]", ""), 
     team = page %>% html_node('.home') %>% html_text() %>% str_trim(),
     meters_gained = page %>% 
       html_node('#team-stat > div > div > div') %>% 
@@ -145,6 +146,7 @@ pages %>%
   ),
   
   tibble_row(
+    game = page %>% rvest::html_nodes('.design-2') %>% html_node('.mb-2') %>%   html_text() %>% str_replace_all( "[[:punct:]]", ""), 
     team = page %>% html_node('.away') %>% html_text() %>% str_trim(),
     meters_gained = page %>% 
       html_node('#team-stat > div > div > div') %>% 
@@ -195,49 +197,9 @@ pages %>%
   )
   
   )
-)
-
-
-
-page %>% 
-  html_node(xpath = '//*[@id="lineup"]') %>%
-  html_node(xpath = '//*[@id="matchreport-lineup"]/div') %>%  
-  html_nodes('.name-holder') %>% html_text2()
-
-page %>% 
-  html_node(xpath = '//*[@id="lineup"]') %>%
-  html_node(xpath = '//*[@id="matchreport-lineup"]/div') %>%  
-  html_nodes('.shirt-num.mr-2') %>% html_text2()
-
-page %>% 
-  html_node(xpath = '//*[@id="lineup"]') %>%
-  html_node(xpath = '//*[@id="matchreport-lineup"]/div') %>%  
-  html_nodes('.col-6.col-sm-6.col-md-6.home') %>%  html_nodes('li') %>% html_text2()
-
-
-#get commentary images
-page %>% 
-  html_node('#commentary > div > div > div') %>% 
-  html_nodes("div.col-6.col-md-3.image > div > img") %>% 
-  html_attr('data-src')
-
-
-page %>% 
-  html_node('#commentary > div > div > div') -> commentary_page
-
-# comentary events
-commentary_page %>% 
-  html_nodes("div.col-6.col-md-5.time.align-items-center > p.mins.mb-1 ") %>% 
-  html_elements('span') %>% html_text()
-
-#event details
-commentary_page %>% 
-  html_nodes("div.col-12.col-md-4.detail > div ") %>% 
-  html_elements('p') %>% html_text()
-
-#current score during events
-
-commentary_page %>% 
-  html_nodes("div.col-6.col-md-5.time.align-items-center > p:nth-child(3)") %>% html_text()
-
-
+) %>%
+  map(function(csv) 
+    
+    write_csv(csv, file = paste0("C:\\WIP\\Personal\\web2\\MyYearInData\\data\\team stats\\", str_trim(unique(csv$game)),str_trim(unique(csv$team)[1]),'-',str_trim(unique(csv$team)[2]),'.csv') ) 
+    
+  )
